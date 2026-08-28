@@ -67,8 +67,13 @@ public class RecordOverlay {
 
         List<Map.Entry<String, String>> renderEntries = getRenderEntries();
 
-        String sampleLine = renderEntries.size() > 1 ? renderEntries.get(1).getValue() : "";
-        int maxWidth = 35 + font.width(sampleLine);
+        int maxTextWidth = 0;
+        for (Map.Entry<String, String> entry : renderEntries) {
+            maxTextWidth = Math.max(maxTextWidth, font.width(entry.getValue()));
+        }
+        int textStartX = ConfigData.getInstance().fishRecordIconShows ? 15 : 4;
+        int rightPadding = 4;
+        int maxWidth = textStartX + maxTextWidth + rightPadding;
         float lineHeight = 11.5f;
         int totalHeight = (int) ((lineHeight + 1) * renderEntries.size());
 
