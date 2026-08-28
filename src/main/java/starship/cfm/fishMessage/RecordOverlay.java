@@ -101,16 +101,23 @@ public class RecordOverlay {
 
         entries.add(Map.entry("", "Time: " +
                 (fishingTime >= 60 ? (fishingTime / 60) + "h " : "") + (fishingTime % 60) + "m"));
-        entries.add(Map.entry("", "Reel-ins: " + lootReelInTimes));
-        entries.add(Map.entry("", "XP: " + String.format("%,d", xpGained)));
-        entries.add(Map.entry("", "Junk: " + junkCaught));
-        entries.add(Map.entry("", "Normal: " + normalFishCaught));
-        entries.add(Map.entry("", "Elusive: " + elusiveFishCaught));
-        entries.add(Map.entry("", "Pearl: " + pearlCaught));
-        entries.add(Map.entry("", "Treasure: " + treasureCaught));
-        entries.add(Map.entry("", "Spirit: " + spiritCaught));
+        entries.add(Map.entry("", "Reel-ins: " + withEarnRate(String.valueOf(lootReelInTimes), lootReelInTimes)));
+        entries.add(Map.entry("", "XP: " + withEarnRate(String.format("%,d", xpGained), xpGained)));
+        entries.add(Map.entry("", "Junk: " + withEarnRate(String.valueOf(junkCaught), junkCaught)));
+        entries.add(Map.entry("", "Normal: " + withEarnRate(String.valueOf(normalFishCaught), normalFishCaught)));
+        entries.add(Map.entry("", "Elusive: " + withEarnRate(String.valueOf(elusiveFishCaught), elusiveFishCaught)));
+        entries.add(Map.entry("", "Pearl: " + withEarnRate(String.valueOf(pearlCaught), pearlCaught)));
+        entries.add(Map.entry("", "Treasure: " + withEarnRate(String.valueOf(treasureCaught), treasureCaught)));
+        entries.add(Map.entry("", "Spirit: " + withEarnRate(String.valueOf(spiritCaught), spiritCaught)));
 
         return entries;
+    }
+
+    // appends the value's per-minute earn rate in parentheses
+    private String withEarnRate(String valueText, int amount) {
+        if (!ConfigData.getInstance().fishRecordShowEarnRate || fishingTime <= 0) return valueText;
+        double rate = (double) amount / fishingTime;
+        return valueText + " (" + String.format("%.1f", rate) + "/min)";
     }
 
     private void getFishingTimeFromScoreBoard() {

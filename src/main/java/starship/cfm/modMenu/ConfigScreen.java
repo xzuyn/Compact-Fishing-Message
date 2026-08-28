@@ -76,6 +76,11 @@ public class ConfigScreen {
                         entryBuilder.startBooleanToggle(Component.translatable("option.cfm.always_shows"), config.fishRecordOverlayAlwaysShows)
                                 .setDefaultValue(false)
                                 .setSaveConsumer(newValue -> config.fishRecordOverlayAlwaysShows = newValue)
+                                .build(),
+                        entryBuilder.startBooleanToggle(Component.translatable("option.cfm.show_earn_rate"), config.fishRecordShowEarnRate)
+                                .setDefaultValue(false)
+                                .setSaveConsumer(newValue -> config.fishRecordShowEarnRate = newValue)
+                                .setTooltip(Component.translatable("tooltip.cfm.show_earn_rate"))
                                 .build()
                 )).build());
 

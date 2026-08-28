@@ -16,6 +16,8 @@
   "tooltip.cfm.trevor_opener": "Whether receives chat messages when TreasureOpenEvent is active.",
   "tooltip.cfm.record_overlay": "Whether shows fishing record panel in your screen.",
   "option.cfm.always_shows": "Show Panel Without Being on Islands",
+  "option.cfm.show_earn_rate": "Show Earn Rate",
+  "tooltip.cfm.show_earn_rate": "Whether shows each stat's per-minute earn rate in parentheses next to its value.",
   "option.cfm.augment_overlay": "Enable Equipments Overlay",
   "tooltip.cfm.augment_overlay": "Whether shows equipped line&bait and switched overclocks"
 }

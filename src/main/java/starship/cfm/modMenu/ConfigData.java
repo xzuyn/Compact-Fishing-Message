@@ -22,6 +22,7 @@ public class ConfigData {
     public int fishRecordTextRGBColor = 0xFFFFFF;
     public boolean fishRecordIconShows = true;
     public boolean fishRecordOverlayAlwaysShows = false;
+    public boolean fishRecordShowEarnRate = false;
     public boolean didInfoShowOnce = false;
     public boolean enableAugmentOverlay = true;
 
@@ -65,6 +66,7 @@ public class ConfigData {
         this.fishRecordTextRGBColor = newData.fishRecordTextRGBColor;
         this.fishRecordIconShows = newData.fishRecordIconShows;
         this.fishRecordOverlayAlwaysShows = newData.fishRecordOverlayAlwaysShows;
+        this.fishRecordShowEarnRate = newData.fishRecordShowEarnRate;
 
         this.enableAugmentOverlay = newData.enableAugmentOverlay;
 
