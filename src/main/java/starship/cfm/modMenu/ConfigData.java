@@ -22,9 +22,13 @@ public class ConfigData {
     public int fishRecordTextRGBColor = 0xFFFFFF;
     public boolean fishRecordIconShows = true;
     public boolean fishRecordOverlayAlwaysShows = false;
-    public boolean fishRecordShowEarnRate = false;
+    public EarnRateMode fishRecordEarnRateMode = EarnRateMode.OFF;
     public boolean didInfoShowOnce = false;
     public boolean enableAugmentOverlay = true;
+
+    public enum EarnRateMode {
+        OFF, MINUTE, HOUR
+    }
 
     public static ConfigData getInstance() {
         return instance;
@@ -66,7 +70,7 @@ public class ConfigData {
         this.fishRecordTextRGBColor = newData.fishRecordTextRGBColor;
         this.fishRecordIconShows = newData.fishRecordIconShows;
         this.fishRecordOverlayAlwaysShows = newData.fishRecordOverlayAlwaysShows;
-        this.fishRecordShowEarnRate = newData.fishRecordShowEarnRate;
+        this.fishRecordEarnRateMode = newData.fishRecordEarnRateMode;
 
         this.enableAugmentOverlay = newData.enableAugmentOverlay;
 

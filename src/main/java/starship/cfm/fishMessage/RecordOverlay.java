@@ -118,9 +118,16 @@ public class RecordOverlay {
         return entries;
     }
 
-    // appends the value's per-minute earn rate in parentheses
+    // appends the value's per-minute or per-hour earn rate in parentheses
     private String withEarnRate(String valueText, int amount) {
-        if (!ConfigData.getInstance().fishRecordShowEarnRate || fishingTime <= 0) return valueText;
+        ConfigData.EarnRateMode mode = ConfigData.getInstance().fishRecordEarnRateMode;
+        if (mode == ConfigData.EarnRateMode.OFF || fishingTime <= 0) return valueText;
+
+        if (mode == ConfigData.EarnRateMode.HOUR) {
+            double rate = (double) amount / fishingTime * 60.0;
+            return valueText + " (" + String.format("%.1f", rate) + "/hr)";
+        }
+
         double rate = (double) amount / fishingTime;
         return valueText + " (" + String.format("%.1f", rate) + "/min)";
     }

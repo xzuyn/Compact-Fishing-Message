@@ -77,9 +77,12 @@ public class ConfigScreen {
                                 .setDefaultValue(false)
                                 .setSaveConsumer(newValue -> config.fishRecordOverlayAlwaysShows = newValue)
                                 .build(),
-                        entryBuilder.startBooleanToggle(Component.translatable("option.cfm.show_earn_rate"), config.fishRecordShowEarnRate)
-                                .setDefaultValue(false)
-                                .setSaveConsumer(newValue -> config.fishRecordShowEarnRate = newValue)
+                        entryBuilder.startEnumSelector(Component.translatable("option.cfm.show_earn_rate"),
+                                        ConfigData.EarnRateMode.class, config.fishRecordEarnRateMode)
+                                .setDefaultValue(ConfigData.EarnRateMode.OFF)
+                                .setSaveConsumer(newValue -> config.fishRecordEarnRateMode = newValue)
+                                .setEnumNameProvider(value -> Component.translatable(
+                                        "option.cfm.earn_rate_mode." + ((ConfigData.EarnRateMode) value).name().toLowerCase()))
                                 .setTooltip(Component.translatable("tooltip.cfm.show_earn_rate"))
                                 .build()
                 )).build());
