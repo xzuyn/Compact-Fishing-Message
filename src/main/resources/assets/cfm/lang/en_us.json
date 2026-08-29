@@ -28,6 +28,7 @@
   "option.cfm.update_interval.ten_seconds": "10s",
   "option.cfm.update_interval.thirty_seconds": "30s",
   "option.cfm.update_interval.one_minute": "1m",
+  "option.cfm.update_interval.on_catch": "On Catch",
   "option.cfm.augment_overlay": "Enable Equipments Overlay",
   "tooltip.cfm.augment_overlay": "Whether shows equipped line&bait and switched overclocks"
 }

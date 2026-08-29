@@ -16,6 +16,7 @@ import org.joml.Matrix3x2fStack;
 import starship.cfm.modMenu.ConfigData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +43,10 @@ public class RecordOverlay {
     private int treasureCaught = 0;
     private int spiritCaught = 0;
     private int xpGained = 0;
+
+    // caches the "(x.x/min)" style suffix for each stat when the update interval is set to
+    // ON_CATCH, so the earn rate only refreshes when record() is called instead of every frame
+    private final Map<String, String> onCatchEarnRateCache = new HashMap<>();
 
     public void tick(Minecraft client) {
         if (client != null && client.player != null && client.level != null) {
@@ -105,14 +110,14 @@ public class RecordOverlay {
         List<Map.Entry<String, String>> entries = new ArrayList<>();
 
         entries.add(Map.entry("", "Time: " + formatTime(fishingTime)));
-        entries.add(Map.entry("", "Reel-ins: " + withEarnRate(String.valueOf(lootReelInTimes), lootReelInTimes)));
-        entries.add(Map.entry("", "XP: " + withEarnRate(String.format("%,d", xpGained), xpGained)));
-        entries.add(Map.entry("", "Junk: " + withEarnRate(String.valueOf(junkCaught), junkCaught)));
-        entries.add(Map.entry("", "Normal: " + withEarnRate(String.valueOf(normalFishCaught), normalFishCaught)));
-        entries.add(Map.entry("", "Elusive: " + withEarnRate(String.valueOf(elusiveFishCaught), elusiveFishCaught)));
-        entries.add(Map.entry("", "Pearl: " + withEarnRate(String.valueOf(pearlCaught), pearlCaught)));
-        entries.add(Map.entry("", "Treasure: " + withEarnRate(String.valueOf(treasureCaught), treasureCaught)));
-        entries.add(Map.entry("", "Spirit: " + withEarnRate(String.valueOf(spiritCaught), spiritCaught)));
+        entries.add(Map.entry("", "Reel-ins: " + withEarnRate("reelins", String.valueOf(lootReelInTimes), lootReelInTimes)));
+        entries.add(Map.entry("", "XP: " + withEarnRate("xp", String.format("%,d", xpGained), xpGained)));
+        entries.add(Map.entry("", "Junk: " + withEarnRate("junk", String.valueOf(junkCaught), junkCaught)));
+        entries.add(Map.entry("", "Normal: " + withEarnRate("normal", String.valueOf(normalFishCaught), normalFishCaught)));
+        entries.add(Map.entry("", "Elusive: " + withEarnRate("elusive", String.valueOf(elusiveFishCaught), elusiveFishCaught)));
+        entries.add(Map.entry("", "Pearl: " + withEarnRate("pearl", String.valueOf(pearlCaught), pearlCaught)));
+        entries.add(Map.entry("", "Treasure: " + withEarnRate("treasure", String.valueOf(treasureCaught), treasureCaught)));
+        entries.add(Map.entry("", "Spirit: " + withEarnRate("spirit", String.valueOf(spiritCaught), spiritCaught)));
 
         return entries;
     }
@@ -125,20 +130,48 @@ public class RecordOverlay {
         return (hrs > 0 ? hrs + "h " : "") + (mins > 0 ? mins + "m " : "") + secs + "s";
     }
 
-    // appends the value's per-minute or per-hour earn rate in parentheses
-    private String withEarnRate(String valueText, int amount) {
+    // appends the value's per-minute or per-hour earn rate in parentheses. When the update
+    // interval is set to ON_CATCH, the suffix is pulled from a cache that's only refreshed
+    // when a catch happens (see refreshOnCatchEarnRateCache()), instead of being recalculated
+    // live on every render.
+    private String withEarnRate(String key, String valueText, int amount) {
         ConfigData.EarnRateMode mode = ConfigData.getInstance().fishRecordEarnRateMode;
         if (mode == ConfigData.EarnRateMode.OFF || fishingTime <= 0) return valueText;
 
+        if (ConfigData.getInstance().fishRecordUpdateInterval == ConfigData.UpdateInterval.ON_CATCH) {
+            return valueText + onCatchEarnRateCache.getOrDefault(key, earnRateSuffix(mode, amount));
+        }
+
+        return valueText + earnRateSuffix(mode, amount);
+    }
+
+    // computes the "(x.x/min)" or "(x.x/hr)" suffix for a given amount, using the live fishingTime
+    private String earnRateSuffix(ConfigData.EarnRateMode mode, int amount) {
         if (mode == ConfigData.EarnRateMode.HOUR) {
             double hoursElapsed = fishingTime / 3600.0;
             double rate = amount / hoursElapsed;
-            return valueText + " (" + String.format("%.1f", rate) + "/hr)";
+            return " (" + String.format("%.1f", rate) + "/hr)";
         }
 
         double minutesElapsed = fishingTime / 60.0;
         double rate = amount / minutesElapsed;
-        return valueText + " (" + String.format("%.1f", rate) + "/min)";
+        return " (" + String.format("%.1f", rate) + "/min)";
+    }
+
+    // snapshots the current earn rate for every stat, called whenever a catch is recorded so
+    // that ON_CATCH mode has an up-to-date value to display without recalculating every frame
+    private void refreshOnCatchEarnRateCache() {
+        ConfigData.EarnRateMode mode = ConfigData.getInstance().fishRecordEarnRateMode;
+        if (mode == ConfigData.EarnRateMode.OFF || fishingTime <= 0) return;
+
+        onCatchEarnRateCache.put("reelins", earnRateSuffix(mode, lootReelInTimes));
+        onCatchEarnRateCache.put("xp", earnRateSuffix(mode, xpGained));
+        onCatchEarnRateCache.put("junk", earnRateSuffix(mode, junkCaught));
+        onCatchEarnRateCache.put("normal", earnRateSuffix(mode, normalFishCaught));
+        onCatchEarnRateCache.put("elusive", earnRateSuffix(mode, elusiveFishCaught));
+        onCatchEarnRateCache.put("pearl", earnRateSuffix(mode, pearlCaught));
+        onCatchEarnRateCache.put("treasure", earnRateSuffix(mode, treasureCaught));
+        onCatchEarnRateCache.put("spirit", earnRateSuffix(mode, spiritCaught));
     }
 
     private void getFishingTimeFromScoreBoard() {
@@ -190,5 +223,6 @@ public class RecordOverlay {
             case ELUSIVE_FISH -> elusiveFishCaught += count;
             case NORMAL_FISH -> normalFishCaught += count;
         }
+        refreshOnCatchEarnRateCache();
     }
 }
