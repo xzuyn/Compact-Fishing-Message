@@ -155,7 +155,7 @@ public class FishMessage {
             ifMatch = true;
             session.isLast = true;
             session.xpGained = Integer.parseInt(earnedMatcher.group(1).trim());
-            recordOverlay.record(session.catType, session.xpGained);
+            recordOverlay.record(session.catType, session.lootCount, session.xpGained);
             if (session.triggers.stream().noneMatch(s -> s.contains("Supply Preserve"))) {
                 AugmentTracker.getInstance().recordAugment();
             }

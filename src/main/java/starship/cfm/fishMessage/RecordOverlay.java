@@ -179,16 +179,16 @@ public class RecordOverlay {
         }
     }
 
-    public void record(FontFactory.CategoryType type, int xp) {
+    public void record(FontFactory.CategoryType type, int count, int xp) {
         lootReelInTimes += 1;
         xpGained += xp;
         switch (type) {
-            case JUNK -> junkCaught++;
-            case PEARL -> pearlCaught++;
-            case TREASURE -> treasureCaught++;
-            case SPIRIT -> spiritCaught++;
-            case ELUSIVE_FISH -> elusiveFishCaught++;
-            case NORMAL_FISH -> normalFishCaught++;
+            case JUNK -> junkCaught += count;
+            case PEARL -> pearlCaught += count;
+            case TREASURE -> treasureCaught += count;
+            case SPIRIT -> spiritCaught += count;
+            case ELUSIVE_FISH -> elusiveFishCaught += count;
+            case NORMAL_FISH -> normalFishCaught += count;
         }
     }
 }
