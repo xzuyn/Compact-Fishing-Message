@@ -21,6 +21,13 @@
   "option.cfm.earn_rate_mode.off": "Off",
   "option.cfm.earn_rate_mode.minute": "Per Minute",
   "option.cfm.earn_rate_mode.hour": "Per Hour",
+  "option.cfm.update_interval": "Update Interval",
+  "tooltip.cfm.update_interval": "How often the panel's time and stats refresh.",
+  "option.cfm.update_interval.one_second": "1s",
+  "option.cfm.update_interval.five_seconds": "5s",
+  "option.cfm.update_interval.ten_seconds": "10s",
+  "option.cfm.update_interval.thirty_seconds": "30s",
+  "option.cfm.update_interval.one_minute": "1m",
   "option.cfm.augment_overlay": "Enable Equipments Overlay",
   "tooltip.cfm.augment_overlay": "Whether shows equipped line&bait and switched overclocks"
 }

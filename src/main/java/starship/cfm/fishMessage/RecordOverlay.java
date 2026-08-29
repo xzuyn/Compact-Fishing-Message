@@ -104,8 +104,7 @@ public class RecordOverlay {
     private List<Map.Entry<String, String>> getRenderEntries() {
         List<Map.Entry<String, String>> entries = new ArrayList<>();
 
-        entries.add(Map.entry("", "Time: " +
-                (fishingTime >= 60 ? (fishingTime / 60) + "h " : "") + (fishingTime % 60) + "m"));
+        entries.add(Map.entry("", "Time: " + formatTime(fishingTime)));
         entries.add(Map.entry("", "Reel-ins: " + withEarnRate(String.valueOf(lootReelInTimes), lootReelInTimes)));
         entries.add(Map.entry("", "XP: " + withEarnRate(String.format("%,d", xpGained), xpGained)));
         entries.add(Map.entry("", "Junk: " + withEarnRate(String.valueOf(junkCaught), junkCaught)));
@@ -118,17 +117,27 @@ public class RecordOverlay {
         return entries;
     }
 
+    // formats total elapsed seconds as e.g. "9m12s" or "1h 9m12s"
+    private String formatTime(int totalSeconds) {
+        int hrs = totalSeconds / 3600;
+        int mins = (totalSeconds % 3600) / 60;
+        int secs = totalSeconds % 60;
+        return (hrs > 0 ? hrs + "h " : "") + mins + "m " + secs + "s";
+    }
+
     // appends the value's per-minute or per-hour earn rate in parentheses
     private String withEarnRate(String valueText, int amount) {
         ConfigData.EarnRateMode mode = ConfigData.getInstance().fishRecordEarnRateMode;
         if (mode == ConfigData.EarnRateMode.OFF || fishingTime <= 0) return valueText;
 
         if (mode == ConfigData.EarnRateMode.HOUR) {
-            double rate = (double) amount / fishingTime * 60.0;
+            double hoursElapsed = fishingTime / 3600.0;
+            double rate = amount / hoursElapsed;
             return valueText + " (" + String.format("%.1f", rate) + "/hr)";
         }
 
-        double rate = (double) amount / fishingTime;
+        double minutesElapsed = fishingTime / 60.0;
+        double rate = amount / minutesElapsed;
         return valueText + " (" + String.format("%.1f", rate) + "/min)";
     }
 
@@ -160,9 +169,10 @@ public class RecordOverlay {
 
             if (ifInFishingIsland) {
                 tickCounter++;
-                if (tickCounter >= 1200) {
-                    fishingTime++;
-                    tickCounter = 0;
+                int intervalTicks = ConfigData.getInstance().fishRecordUpdateInterval.getSeconds() * 20;
+                while (tickCounter >= intervalTicks) {
+                    fishingTime += intervalTicks / 20;
+                    tickCounter -= intervalTicks;
                 }
             }
 

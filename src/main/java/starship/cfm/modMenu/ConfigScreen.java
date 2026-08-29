@@ -84,6 +84,14 @@ public class ConfigScreen {
                                 .setEnumNameProvider(value -> Component.translatable(
                                         "option.cfm.earn_rate_mode." + ((ConfigData.EarnRateMode) value).name().toLowerCase()))
                                 .setTooltip(Component.translatable("tooltip.cfm.show_earn_rate"))
+                                .build(),
+                        entryBuilder.startEnumSelector(Component.translatable("option.cfm.update_interval"),
+                                        ConfigData.UpdateInterval.class, config.fishRecordUpdateInterval)
+                                .setDefaultValue(ConfigData.UpdateInterval.ONE_SECOND)
+                                .setSaveConsumer(newValue -> config.fishRecordUpdateInterval = newValue)
+                                .setEnumNameProvider(value -> Component.translatable(
+                                        "option.cfm.update_interval." + ((ConfigData.UpdateInterval) value).name().toLowerCase()))
+                                .setTooltip(Component.translatable("tooltip.cfm.update_interval"))
                                 .build()
                 )).build());
 

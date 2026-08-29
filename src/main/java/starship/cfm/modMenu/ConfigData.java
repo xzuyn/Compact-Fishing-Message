@@ -23,11 +23,26 @@ public class ConfigData {
     public boolean fishRecordIconShows = true;
     public boolean fishRecordOverlayAlwaysShows = false;
     public EarnRateMode fishRecordEarnRateMode = EarnRateMode.OFF;
+    public UpdateInterval fishRecordUpdateInterval = UpdateInterval.ONE_SECOND;
     public boolean didInfoShowOnce = false;
     public boolean enableAugmentOverlay = true;
 
     public enum EarnRateMode {
         OFF, MINUTE, HOUR
+    }
+
+    public enum UpdateInterval {
+        ONE_SECOND(1), FIVE_SECONDS(5), TEN_SECONDS(10), THIRTY_SECONDS(30), ONE_MINUTE(60);
+
+        private final int seconds;
+
+        UpdateInterval(int seconds) {
+            this.seconds = seconds;
+        }
+
+        public int getSeconds() {
+            return seconds;
+        }
     }
 
     public static ConfigData getInstance() {
@@ -71,6 +86,7 @@ public class ConfigData {
         this.fishRecordIconShows = newData.fishRecordIconShows;
         this.fishRecordOverlayAlwaysShows = newData.fishRecordOverlayAlwaysShows;
         this.fishRecordEarnRateMode = newData.fishRecordEarnRateMode;
+        this.fishRecordUpdateInterval = newData.fishRecordUpdateInterval;
 
         this.enableAugmentOverlay = newData.enableAugmentOverlay;
 
