@@ -117,12 +117,12 @@ public class RecordOverlay {
         return entries;
     }
 
-    // formats total elapsed seconds as e.g. "9m12s" or "1h 9m12s"
+    // formats total elapsed time including seconds
     private String formatTime(int totalSeconds) {
         int hrs = totalSeconds / 3600;
         int mins = (totalSeconds % 3600) / 60;
         int secs = totalSeconds % 60;
-        return (hrs > 0 ? hrs + "h " : "") + mins + "m " + secs + "s";
+        return (hrs > 0 ? hrs + "h " : "") + (mins > 0 ? mins + "m " : "") + secs + "s";
     }
 
     // appends the value's per-minute or per-hour earn rate in parentheses
