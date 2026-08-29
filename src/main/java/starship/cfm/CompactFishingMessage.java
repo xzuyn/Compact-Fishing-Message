@@ -25,7 +25,6 @@ import starship.cfm.fishMessage.FishMessage;
 import starship.cfm.modMenu.ConfigData;
 import starship.cfm.modMenu.ConfigScreen;
 import starship.cfm.trevorOpener.TrevorOpener;
-import starship.cfm.wallMessage.WallMessage;
 
 public class CompactFishingMessage implements ClientModInitializer {
     public static final String MOD_ID = "compact-fishing-message";
@@ -35,7 +34,6 @@ public class CompactFishingMessage implements ClientModInitializer {
     private FishMessage fishmessage;
     private TrevorOpener trevoropener;
     private AugmentTracker augmenttracker;
-    private WallMessage wallmessage;
 
     public static CompactFishingMessage getInstance() {
         return instance;
@@ -48,7 +46,6 @@ public class CompactFishingMessage implements ClientModInitializer {
         this.fishmessage = new FishMessage(this);
         this.trevoropener = new TrevorOpener(this);
         this.augmenttracker = new AugmentTracker(this);
-        this.wallmessage = new WallMessage(this);
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         openConfigKeybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
@@ -116,13 +113,6 @@ public class CompactFishingMessage implements ClientModInitializer {
                     this.augmenttracker.render(drawContext);
                 }
         );
-        HudElementRegistry.attachElementAfter(
-                Identifier.fromNamespaceAndPath("fish-helper", "fish-augment-layer"),
-                Identifier.fromNamespaceAndPath("fish-helper", "wall-record-layer"),
-                (drawContext, tickDelta) -> {
-                    this.wallmessage.render(drawContext);
-                }
-        );
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!ConfigData.getInstance().didInfoShowOnce && client.player != null && client.player.tickCount == 20) {
@@ -150,7 +140,6 @@ public class CompactFishingMessage implements ClientModInitializer {
         this.fishmessage.tick(client);
         this.trevoropener.tick(client);
         this.augmenttracker.tick(client);
-        this.wallmessage.tick(client);
     }
 
     public void loadConfig() {

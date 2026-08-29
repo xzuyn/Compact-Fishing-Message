@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import starship.cfm.augmentTracker.AugmentTracker;
 import starship.cfm.fishMessage.FishMessage;
 import starship.cfm.trevorOpener.TrevorOpener;
-import starship.cfm.wallMessage.WallMessage;
 
 @Mixin(ChatListener.class)
 public abstract class MixinChatListener {
@@ -31,7 +30,6 @@ public abstract class MixinChatListener {
             ci.cancel();
         }
         AugmentTracker.getInstance().detectText(message);
-        WallMessage.getInstance().detectText(message);
     }
 
     @ModifyVariable(

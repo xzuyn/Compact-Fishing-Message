@@ -27,14 +27,6 @@ public class ConfigData {
     public boolean didInfoShowOnce = false;
     public boolean enableAugmentOverlay = true;
 
-    public boolean enableWallRecordOverlay = true;
-    public int wallRecordRenderTextX = 10;
-    public int wallRecordRenderTextY = 100;
-    public float wallRecordRenderScale = 1;
-    public int wallRecordBackgroundAlphaColor = 0x88;
-    public int wallRecordTextRGBColor = 0xFFFFFF;
-    public boolean wallRecordOverlayAlwaysShows = false;
-
     public enum EarnRateMode {
         OFF, MINUTE, HOUR
     }
@@ -97,14 +89,6 @@ public class ConfigData {
         this.fishRecordUpdateInterval = newData.fishRecordUpdateInterval;
 
         this.enableAugmentOverlay = newData.enableAugmentOverlay;
-
-        this.enableWallRecordOverlay = newData.enableWallRecordOverlay;
-        this.wallRecordRenderTextX = newData.wallRecordRenderTextX;
-        this.wallRecordRenderTextY = newData.wallRecordRenderTextY;
-        this.wallRecordRenderScale = newData.wallRecordRenderScale;
-        this.wallRecordBackgroundAlphaColor = newData.wallRecordBackgroundAlphaColor;
-        this.wallRecordTextRGBColor = newData.wallRecordTextRGBColor;
-        this.wallRecordOverlayAlwaysShows = newData.wallRecordOverlayAlwaysShows;
 
         this.didInfoShowOnce = newData.didInfoShowOnce;
     }

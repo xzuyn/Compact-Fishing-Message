@@ -101,43 +101,6 @@ public class ConfigScreen {
                 .setTooltip(Component.translatable("tooltip.cfm.augment_overlay"))
                 .build());
 
-        ConfigCategory wallCategory = builder.getOrCreateCategory(Component.translatable("category.cfm.hole_in_the_wall"));
-
-        wallCategory.addEntry(entryBuilder.startBooleanToggle(Component.translatable("option.cfm.wall_record_overlay"), config.enableWallRecordOverlay)
-                .setDefaultValue(true)
-                .setSaveConsumer(newValue -> config.enableWallRecordOverlay = newValue)
-                .setTooltip(Component.translatable("tooltip.cfm.wall_record_overlay"))
-                .build());
-
-        wallCategory.addEntry(entryBuilder.startSubCategory(
-                Component.translatable("group.cfm.render_settings"),
-                List.of(
-                        entryBuilder.startIntSlider(Component.translatable("option.cfm.render_x"), config.wallRecordRenderTextX, 0, scaledWidth)
-                                .setDefaultValue(10)
-                                .setSaveConsumer(newValue -> config.wallRecordRenderTextX = newValue)
-                                .build(),
-                        entryBuilder.startIntSlider(Component.translatable("option.cfm.render_y"), config.wallRecordRenderTextY, 0, scaledHeight)
-                                .setDefaultValue(100)
-                                .setSaveConsumer(newValue -> config.wallRecordRenderTextY = newValue)
-                                .build(),
-                        entryBuilder.startFloatField(Component.translatable("option.cfm.font_size"), config.wallRecordRenderScale)
-                                .setDefaultValue(1.0f)
-                                .setSaveConsumer(newValue -> config.wallRecordRenderScale = newValue)
-                                .build(),
-                        entryBuilder.startIntSlider(Component.translatable("option.cfm.bg_color"), config.wallRecordBackgroundAlphaColor, 0, 255)
-                                .setDefaultValue(0x88)
-                                .setSaveConsumer(newValue -> config.wallRecordBackgroundAlphaColor = newValue)
-                                .build(),
-                        entryBuilder.startColorField(Component.translatable("option.cfm.text_color"), config.wallRecordTextRGBColor)
-                                .setDefaultValue(0xFFFFFF)
-                                .setSaveConsumer(newValue -> config.wallRecordTextRGBColor = newValue)
-                                .build(),
-                        entryBuilder.startBooleanToggle(Component.translatable("option.cfm.always_shows"), config.wallRecordOverlayAlwaysShows)
-                                .setDefaultValue(false)
-                                .setSaveConsumer(newValue -> config.wallRecordOverlayAlwaysShows = newValue)
-                                .build()
-                )).build());
-
         builder.setSavingRunnable(cfm::saveConfig);
 
         return builder.build();
